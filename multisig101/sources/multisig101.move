@@ -1,9 +1,26 @@
-/*
-/// Module: multisig101
-module multisig101::multisig101;
-*/
+module multisig101::Multisig101 {
+    use sui::coin::Coin;
+    use sui::sui::SUI;
 
-// For Move coding conventions, see
-// https://docs.sui.io/concepts/sui-move-concepts/conventions
+    public struct Multisig has key, store {
+        id: UID,
+        owner: address,
+        amount: u64,
+    }
+
+   public fun deposit(wallet: &mut Multisig, coin: Coin<SUI>){
+        wallet.amount = wallet.amount + sui::coin::value(&coin);
+        sui::coin::destroy_zero(coin);
+    }
+
+    fun init(ctx: &mut TxContext) {
+        let wallet = Multisig {
+            id: object::new(ctx),
+            owner: tx_context::sender(ctx),
+            amount: 0
+        };
+        transfer::public_transfer(wallet, tx_context::sender(ctx));
+    }
+}
 
 
