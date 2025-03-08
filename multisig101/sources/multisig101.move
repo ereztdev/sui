@@ -8,7 +8,7 @@ module multisig101::Multisig101 {
         amount: u64,
     }
 
-   public fun deposit(wallet: &mut Multisig, coin: Coin<SUI>){
+    public fun deposit(wallet: &mut Multisig, coin: Coin<SUI>) {
         wallet.amount = wallet.amount + sui::coin::value(&coin);
         sui::coin::destroy_zero(coin);
     }
@@ -22,5 +22,3 @@ module multisig101::Multisig101 {
         transfer::public_transfer(wallet, tx_context::sender(ctx));
     }
 }
-
-
